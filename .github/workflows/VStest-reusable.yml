@@ -140,7 +140,7 @@ jobs:
             if (${{ inputs.run-in-parallel }}) { $vstestArgs += '/Parallel' }
             if (${{ inputs.diagnosticsEnabled }}) { $vstestArgs += '/Diag:logfile.txt' }
             if (${{ inputs.rerunFailedTests }}) { $vstestArgs += "/Rerun:${{ inputs.rerunType }}" }
-            if (-not [string]::IsNullOrEmpty("${{ inputs.testFiltercriteria }}")) { $vstestArgs += "/TestCaseFilter:${{ inputs.testFiltercriteria }}" }
+            if (${{ inputs.testFiltercriteria }}) { $vstestArgs += "/TestCaseFilter:${{ inputs.testFiltercriteria }}" }
             if (${{ inputs.runOnlyImpactedTests }}) { 
               $vstestArgs += "/ImpactedTests"
               $vstestArgs += "/RunAllTestsAfter:${{ inputs.runAllTestsAfterXBuilds }}"
