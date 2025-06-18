@@ -74,7 +74,7 @@ on:
       resultsFolder: # New input
         required: false
         type: string
-        default: "$(Agent.TempDirectory)TestResults"
+        default: "${{ runner.temp }}/TestResults"
       testFiltercriteria: # New input
         required: false
         type: string
@@ -109,7 +109,7 @@ jobs:
         shell: pwsh
         run: |
           # Debug: List all files in the working directory
-          $workingDirectory = "${{ github.workspace }}"
+          $workingDirectory = "$env:Github_Workspace"
           Set-Location -Path $workingDirectory
           Write-Host "Listing all files in the working directory:"
           Get-ChildItem -Path $workingDirectory -Recurse | ForEach-Object { Write-Host $_.FullName }
@@ -140,7 +140,7 @@ jobs:
             if (${{ inputs.run-in-parallel }}) { $vstestArgs += '/Parallel' }
             if (${{ inputs.diagnosticsEnabled }}) { $vstestArgs += '/Diag:logfile.txt' }
             if (${{ inputs.rerunFailedTests }}) { $vstestArgs += "/Rerun:${{ inputs.rerunType }}" }
-            if (${{ inputs.testFiltercriteria }}) { $vstestArgs += "/TestCaseFilter:${{ inputs.testFiltercriteria }}" }
+            if (-not [string]::IsNullOrEmpty("${{ inputs.testFiltercriteria }}")) { $vstestArgs += "/TestCaseFilter:${{ inputs.testFiltercriteria }}" }
             if (${{ inputs.runOnlyImpactedTests }}) { 
               $vstestArgs += "/ImpactedTests"
               $vstestArgs += "/RunAllTestsAfter:${{ inputs.runAllTestsAfterXBuilds }}"
