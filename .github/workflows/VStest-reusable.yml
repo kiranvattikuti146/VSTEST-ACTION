@@ -74,7 +74,7 @@ on:
       resultsFolder: # New input
         required: false
         type: string
-        default: "${{ runner.temp }}/TestResults"
+        default: "${{ github.workspace }}/TestResults"
       testFiltercriteria: # New input
         required: false
         type: string
